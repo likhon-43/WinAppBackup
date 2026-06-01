@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WinAppBackup - Modern App & Driver Utility</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Window Titlebar Overlay -->
+  <div class="window-titlebar" id="windowTitlebar">
+    <div class="app-logo-area">
+      <div class="logo-orb"></div>
+      <span class="app-title-text">WinAppBackup & Driver Suite</span>
+    </div>
+  </div>
+
+  <div class="app-container">
+    <!-- Left Navigation Sidebar -->
+    <nav class="sidebar" id="appSidebar">
+      <div class="nav-links">
+        <a href="#backup" class="nav-link active" id="navBackupLink">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+          <span class="nav-text">Scan & Backup</span>
+        </a>
+        <a href="#drivers" class="nav-link" id="navDriversLink">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+          <span class="nav-text">System Drivers</span>
+        </a>
+        <a href="#restore" class="nav-link" id="navRestoreLink">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+          <span class="nav-text">Restore Archive</span>
+        </a>
+        <a href="#settings" class="nav-link" id="navSettingsLink">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          <span class="nav-text">Preferences</span>
+        </a>
+      </div>
+      
+      <div class="sidebar-footer">
+        <div class="system-badge">
+          <div class="badge-dot"></div>
+          <span class="badge-text" id="statusBadgeText">System Ready</span>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content Panel Area -->
+    <main class="main-content" id="mainContent">
+      
+      <!-- Elevated Alert Banner -->
+      <div class="alert-banner admin-alert-success hidden" id="adminSuccessBanner">
+        <div class="alert-icon">🛡️</div>
+        <div class="alert-content">
+          <h4>Running with Administrator Privileges</h4>
+          <p>Full device scanning and native system driver backup capabilities are active.</p>
+        </div>
+      </div>
+      <div class="alert-banner admin-alert-warning" id="adminWarningBanner">
+        <div class="alert-icon">⚠️</div>
+        <div class="alert-content">
+          <h4>Standard User Session Active</h4>
+          <p>To back up or restore system drivers, please close the app and relaunch it as <strong>Administrator</strong>.</p>
+        </div>
+      </div>
+
+      <!-- SCREEN 1: Scan & Backup -->
+      <section class="screen active" id="screenBackup">
+        <div class="screen-header">
+          <h1 class="screen-title">Create Application Backup</h1>
+          <p class="screen-subtitle">Scan your device to detect all applications (Winget, Manual MSI/EXE, Vivaldi), configure setting backups, and export portable files.</p>
+        </div>
+
+        <div class="action-banner">
+          <div class="banner-info">
+            <h3>Scan installed system applications</h3>
+            <p>Maps standard packages alongside custom and manual programs registry hives and AppData environments.</p>
+          </div>
+          <button class="btn btn-primary btn-glowing" id="btnScanSystem">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            Scan Installed Apps
+          </button>
+        </div>
+
+        <!-- Scanning State Indicator (Hidden by default) -->
+        <div class="scanner-status-box hidden" id="scannerStatus">
+          <div class="scanner-spinner"></div>
+          <div class="scanner-text-container">
+            <h4>Scanning installed packages...</h4>
+            <p id="scannerCurrentTask">Scanning registry and AppData environments...</p>
+          </div>
+        </div>
+
+        <!-- Apps List Section (Hidden until scanned) -->
+        <div class="apps-list-section hidden" id="appsListSection">
+          <div class="section-toolbar">
+            <div class="toolbar-stats">
+              <span class="stat-pill"><strong id="statsTotalApps">0</strong> Discovered Apps</span>
+              <span class="stat-pill"><strong id="statsWingetApps">0</strong> Winget Compatible</span>
+              <span class="stat-pill"><strong id="statsSettingsSize">0 MB</strong> Total Settings Size</span>
+            </div>
+            
+            <div class="toolbar-search">
+              <input type="text" class="search-input" id="searchAppsInput" placeholder="Search applications...">
+            </div>
+          </div>
+
+          <div class="table-container">
+            <table class="apps-table">
+              <thead>
+                <tr>
+                  <th width="40"><input type="checkbox" id="checkboxSelectAll" checked></th>
+                  <th>Application Details</th>
+                  <th width="140">Method</th>
+                  <th width="200">Discovered Settings</th>
+                  <th width="140">Backup Settings</th>
+                </tr>
+              </thead>
+              <tbody id="appsTableBody">
+                <!-- App Rows will be injected here by renderer.js -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Export Action Pane -->
+          <div class="export-pane">
+            <div class="pane-column">
+              <div class="export-options-area">
+                <label class="checkbox-option-inline">
+                  <input type="checkbox" id="switchIncludeAppData" checked>
+                  <div class="option-details-inline">
+                    <strong>Include User Data / AppData Configurations</strong>
+                    <span>Archive folders for config migration. Turn off for clean, fresh installs.</span>
+                  </div>
+                </label>
+              </div>
+              
+              <label class="field-label">Save Backup Archive To</label>
+              <div class="input-group">
+                <input type="text" class="text-input" id="inputExportPath" placeholder="Choose a destination folder..." readonly>
+                <button class="btn btn-secondary" id="btnBrowseExport">Browse...</button>
+              </div>
+            </div>
+            
+            <div class="pane-column align-right">
+              <label class="field-label">&nbsp;</label>
+              <button class="btn btn-primary btn-large btn-glowing" id="btnCreateBackup" disabled>
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                Build Backup Archive
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 2: System Drivers Backup & Restore -->
+      <section class="screen" id="screenDrivers">
+        <div class="screen-header">
+          <h1 class="screen-title">System Drivers Backup & Restore</h1>
+          <p class="screen-subtitle">Export all third-party kernel drivers (Chipset, Graphics, Wi-Fi, Audio) to safeguard device installations.</p>
+        </div>
+
+        <div class="drivers-layout-grid">
+          <!-- Card A: Export Drivers -->
+          <div class="settings-card glow-card">
+            <h3>Export System Drivers</h3>
+            <p class="card-desc-block">Copies and indexes all active third-party drivers into a local folder. Great for saving laptop drivers before re-imaging.</p>
+            
+            <div class="pane-column">
+              <label class="field-label">Drivers Backup Location</label>
+              <div class="input-group">
+                <input type="text" class="text-input" id="inputDriverBackupDir" placeholder="Choose driver backup folder..." readonly>
+                <button class="btn btn-secondary" id="btnBrowseDriverBackup">Browse...</button>
+              </div>
+            </div>
+            
+            <button class="btn btn-primary btn-large btn-glowing" id="btnStartDriverBackup" disabled>
+              <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+              Export System Drivers
+            </button>
+          </div>
+
+          <!-- Card B: Restore Drivers -->
+          <div class="settings-card glow-card-purple">
+            <h3>Restore System Drivers</h3>
+            <p class="card-desc-block">Reinstalls drivers in batch (.inf files) recursively from an exported drivers directory on your fresh Windows system.</p>
+            
+            <div class="pane-column">
+              <label class="field-label">Drivers Backup Directory</label>
+              <div class="input-group">
+                <input type="text" class="text-input" id="inputDriverRestoreDir" placeholder="Choose driver backup folder..." readonly>
+                <button class="btn btn-secondary" id="btnBrowseDriverRestore">Browse...</button>
+              </div>
+            </div>
+            
+            <button class="btn btn-primary btn-large btn-glowing btn-purple" id="btnStartDriverRestore" disabled>
+              <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              Restore System Drivers
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 3: Restore Archive -->
+      <section class="screen" id="screenRestore">
+        <div class="screen-header">
+          <h1 class="screen-title">Restore Application Archive</h1>
+          <p class="screen-subtitle">Reinstall your programs silently and restore user settings exactly as they were on your fresh installation.</p>
+        </div>
+
+        <div class="restore-dropzone" id="restoreDropzone">
+          <div class="dropzone-visual">
+            <svg class="dropzone-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="8" x2="8" y2="16"/><line x1="8" y1="8" x2="16" y2="16"/></svg>
+          </div>
+          <h3>Drag and drop your <strong>.wabak</strong> file here</h3>
+          <p>or click here to select a file manually</p>
+          <input type="file" id="fileInputRestore" class="hidden" accept=".wabak,.zip">
+        </div>
+
+        <!-- Restore Details Panel (Hidden until loaded) -->
+        <div class="restore-details-panel hidden" id="restoreDetailsPanel">
+          <div class="details-card">
+            <div class="card-header">
+              <h3 class="card-title">Backup File Details</h3>
+              <button class="btn btn-text" id="btnUnloadArchive">Clear File</button>
+            </div>
+            <div class="card-grid">
+              <div class="grid-item">
+                <span class="item-label">Source Computer</span>
+                <span class="item-value" id="restorePcName">-</span>
+              </div>
+              <div class="grid-item">
+                <span class="item-label">Created By User</span>
+                <span class="item-value" id="restoreUserName">-</span>
+              </div>
+              <div class="grid-item">
+                <span class="item-label">Backup Date</span>
+                <span class="item-value" id="restoreDate">-</span>
+              </div>
+              <div class="grid-item">
+                <span class="item-label">OS Platform</span>
+                <span class="item-value" id="restoreOs">-</span>
+              </div>
+              <div class="grid-item">
+                <span class="item-label">Applications Count</span>
+                <span class="item-value" id="restoreAppCount">-</span>
+              </div>
+              <div class="grid-item">
+                <span class="item-label">Settings Directories</span>
+                <span class="item-value" id="restoreSettingsCount">-</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="restore-options">
+            <h3>Restore Configurations</h3>
+            <div class="options-group">
+              <label class="checkbox-option">
+                <input type="checkbox" id="checkInstallApps" checked>
+                <div class="option-details">
+                  <strong>Reinstall Applications</strong>
+                  <span>Automatically install discovered compatible apps using winget.</span>
+                </div>
+              </label>
+              <label class="checkbox-option">
+                <input type="checkbox" id="checkRestoreSettings" checked>
+                <div class="option-details">
+                  <strong>Restore User Settings & Data</strong>
+                  <span>Extract configuration folders back to original AppData paths.</span>
+                </div>
+              </label>
+            </div>
+
+            <button class="btn btn-primary btn-large btn-glowing" id="btnStartRestore">
+              <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              Begin System Restore
+            </button>
+          </div>
+        </div>
+
+        <!-- Restoration Progress Overlay (Hidden until active) -->
+        <div class="progress-panel hidden" id="restoreProgressPanel">
+          <div class="progress-header">
+            <h3 id="progressStatusTitle">Restoring packages...</h3>
+            <span class="progress-percentage" id="progressPercentText">0%</span>
+          </div>
+          <div class="progress-bar-container">
+            <div class="progress-bar-fill" id="progressBarFill" style="width: 0%;"></div>
+          </div>
+          
+          <div class="terminal-container">
+            <div class="terminal-header">
+              <span class="terminal-title">System Console Logs</span>
+              <button class="btn btn-text-small" id="btnClearLogs">Clear Log</button>
+            </div>
+            <div class="terminal-body" id="terminalLogs">
+              <div class="log-line text-info">Console initialized... Ready to stream restoration output.</div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- SCREEN 4: Preferences / Settings -->
+      <section class="screen" id="screenSettings">
+        <div class="screen-header">
+          <h1 class="screen-title">Preferences</h1>
+          <p class="screen-subtitle">Adjust core application settings and custom behavior configurations.</p>
+        </div>
+
+        <div class="settings-card">
+          <h3>Backup Preferences</h3>
+          <div class="settings-list">
+            <div class="setting-item">
+              <div class="setting-info">
+                <span class="setting-label">Automatic Winget Agreements</span>
+                <span class="setting-desc">Always accept license and source agreements without interactive prompts.</span>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="switchAcceptAgreements" checked>
+                <span class="switch-slider"></span>
+              </label>
+            </div>
+            
+            <div class="setting-item">
+              <div class="setting-info">
+                <span class="setting-label">High-Level Compression</span>
+                <span class="setting-desc">Compress AppData zips with higher density (takes slightly longer to build).</span>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="switchHighCompression" checked>
+                <span class="switch-slider"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="settings-card">
+          <h3>System Information</h3>
+          <div class="system-info-grid">
+            <div class="sys-item">
+              <span class="sys-label">Device Name:</span>
+              <span class="sys-value" id="sysName">WINDOWS-LAPTOP</span>
+            </div>
+            <div class="sys-item">
+              <span class="sys-label">OS Environment:</span>
+              <span class="sys-value" id="sysOs">Windows 11 Home / Pro (Build 22631)</span>
+            </div>
+            <div class="sys-item">
+              <span class="sys-label">Active User Profile:</span>
+              <span class="sys-value" id="sysUser">Local User</span>
+            </div>
+            <div class="sys-item">
+              <span class="sys-label">Winget Package Manager:</span>
+              <span class="sys-value" id="sysWinget">Supported</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="settings-card align-center">
+          <p class="credit-text">WinAppBackup & Driver Suite • Version 2.0.0</p>
+          <p class="sub-credit">Designed using Windows Fluent & Acrylic Aesthetic Guidelines</p>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="renderer.js"></script>
+</body>
+</html>
